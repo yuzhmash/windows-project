@@ -7,9 +7,7 @@ const modals = () => {
 
         trigger.forEach(e => {
             e.addEventListener('click', (e) => {
-                if (e.target) {
-                    e.preventDefault();
-                }
+                if (e.target) e.preventDefault();
     
                 modal.style.display = "block";
                 document.body.style.overflow = "hidden";
@@ -41,7 +39,7 @@ const modals = () => {
 
     bindModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close');
     bindModal('.phone_link', '.popup', '.popup .popup_close');
-    showModalByTime('.popup', 3000)
+    // showModalByTime('.popup', 60000);
 };
 
 export default modals;
