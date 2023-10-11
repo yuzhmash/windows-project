@@ -1,17 +1,17 @@
-const forms = () => {
-    const form = document.querySelectorAll('form'),
-          inputs = document.querySelectorAll('input'),
-          phoneInputs = document.querySelectorAll('input[name="user_phone"]');
+import checkNumInputs from "./checkNumInputs";
 
-    phoneInputs.forEach(e => {
-        e.addEventListener('input', () => e.value = e.value.replace(/\D/, ''));
-    });
+const forms = (state) => {
+    const form = document.querySelectorAll('form'),
+          inputs = document.querySelectorAll('input');
+
+    checkNumInputs('input[name="user_phone"]');
 
     const message = {
         loading: 'Загрузка...',
         succses: 'Спасибо! Скоро мы с вами свяжемся',
         failure: 'Что-то пошло не так...'
     };
+    
 
     const postData = async (url, data) => {
         document.querySelector('.status').textContent = message.loading;
@@ -35,12 +35,24 @@ const forms = () => {
             const thanks = (mess) => {
                 const thanks = document.querySelectorAll('.form');
                 thanks[i].textContent = mess;
-                thanks[i].style.cssText = `
-                    padding: 4rem 5rem',
-                    fontSize: 20px
-                `;
+                thanks[i].style.padding = '4rem 5rem';
+                thanks[i].style.fontSize = '20px';
+
+                setTimeout(() => {
+                    thanks[i].textContent = '';
+                    thanks[i].innerHTML = `
+                        <h2>Запишитесь сегодня на <br><span>бесплатный замер</span></h2>
+                        <input class="form-control form_input" name="user_name" required type="text" placeholder="Введите ваше имя">
+                        <input class="form-control form_input" name="user_phone" required type="text" placeholder="Введите телефон">
+                        <button class="text-uppercase btn-block button" name="submit" type="submit">Вызвать замерщика!</button>
+                        <p class="form_notice">Ваши данные конфиденциальны</p>
+                    `
+                }, 10000);
             }   
             const formData = new FormData(f);
+            if (f.getAttribute('data-calc') === "end") {
+                for (let key in state) formData.append(key, state[key])
+            }
 
             postData('assets/server.php', formData)
                 .then(res => {
