@@ -3,7 +3,8 @@ const modals = () => {
         const trigger = document.querySelectorAll(triggerSelectore),
               modal = document.querySelector(modalSelectore),
               close = document.querySelector(closeSelectore),
-              windows = document.querySelectorAll('[data-modal]');
+              windows = document.querySelectorAll('[data-modal]'),
+              scroll = calcScroll();
 
 
         trigger.forEach(e => {
@@ -14,6 +15,7 @@ const modals = () => {
     
                 modal.style.display = "block";
                 document.body.style.overflow = "hidden";
+                document.body.style.marginRight = `${scroll}px`;
                 // document.body.classList.add('modal-open')
             });
         })
@@ -22,6 +24,7 @@ const modals = () => {
             windows.forEach(e=> e.style.display = 'none');
             modal.style.display = "none";
             document.body.style.overflow = "";
+            document.body.style.marginRight = '0px';
             // document.body.classList.remove('modal-open');
         });
 
@@ -30,6 +33,7 @@ const modals = () => {
                 windows.forEach(e=> e.style.display = 'none');
                 modal.style.display = "none";
                 document.body.style.overflow = "";
+                document.body.style.marginRight = '0px';
                 // document.body.classList.remove('modal-open');
             }
         });
@@ -41,6 +45,19 @@ const modals = () => {
             document.body.style.overflow = "hidden";
         }, time)
     }
+
+    function calcScroll() {
+        let div = document.createElement('div');
+        div.style.width = '50px';
+        div.style.height = '50px';
+        div.style.overflowY = 'scroll';
+        div.style.visibility = 'hidden'
+
+        document.body.appendChild(div);
+        let scrollWidth = div.offsetWidth - div.clientWidth;
+        div.remove();
+        return scrollWidth;
+    };
 
     bindModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close');
     bindModal('.phone_link', '.popup', '.popup .popup_close');
